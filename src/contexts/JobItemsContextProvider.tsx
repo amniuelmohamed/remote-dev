@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import type { TJobItem } from "../lib/types";
 import {
     useSearchQuery,
@@ -35,18 +35,26 @@ export default function JobItemsContextProvider({
 
     // derived state
     const totalJobItems = jobItems?.length || 0;
-    const sortedJobItems = [...jobItems].sort((a, b) => {
-        if (sortBy === "recent") {
-            return a.daysAgo - b.daysAgo;
-        } else if (sortBy === "relevant") {
-            return b.relevanceScore - a.relevanceScore;
-        } else {
-            return 0;
-        }
-    });
-    const slicedJobItems = sortedJobItems.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
+    const sortedJobItems = useMemo(
+        () =>
+            [...jobItems].sort((a, b) => {
+                if (sortBy === "recent") {
+                    return a.daysAgo - b.daysAgo;
+                } else if (sortBy === "relevant") {
+                    return b.relevanceScore - a.relevanceScore;
+                } else {
+                    return 0;
+                }
+            }),
+        [jobItems, sortBy]
+    );
+    const slicedJobItems = useMemo(
+        () =>
+            sortedJobItems.slice(
+                (currentPage - 1) * ITEMS_PER_PAGE,
+                currentPage * ITEMS_PER_PAGE
+            ),
+        [currentPage, sortedJobItems]
     );
 
     // effects
@@ -71,19 +79,31 @@ export default function JobItemsContextProvider({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeJobId, debouncedSearchText, sortBy]);
 
+    const contextValue = useMemo(
+        () => ({
+            initialJobItems: jobItems,
+            jobItems: slicedJobItems,
+            totalJobItems,
+            isLoading,
+            currentPage,
+            setCurrentPage,
+            sortBy,
+            setSortBy,
+        }),
+        [
+            jobItems,
+            slicedJobItems,
+            totalJobItems,
+            isLoading,
+            currentPage,
+            sortBy,
+            setCurrentPage,
+            setSortBy,
+        ]
+    );
+
     return (
-        <JobItemsContext.Provider
-            value={{
-                initialJobItems: jobItems,
-                jobItems: slicedJobItems,
-                totalJobItems,
-                isLoading,
-                currentPage,
-                setCurrentPage,
-                sortBy,
-                setSortBy,
-            }}
-        >
+        <JobItemsContext.Provider value={contextValue}>
             {children}
         </JobItemsContext.Provider>
     );
