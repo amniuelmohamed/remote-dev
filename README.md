@@ -2,13 +2,13 @@
 
 ### Introduction
 
-RemoteDev is a platform that allows developers to search for remote jobs.
+RemoteDev is a platform that enables developers to explore and apply for remote job opportunities.
 
 ### RemoteDev Features
 
--   Users can search for remote jobs.
--   Users can bookmark the jobs they're interested in, and come back to them later.
--   They can sort jobs by relevant or by recent.
+-   Users can effortlessly search for remote jobs tailored to their skills and preferences.
+-   Bookmark functionality allows users to save and revisit job listings of interest.
+-   Jobs can be sorted by relevance or recency for enhanced browsing experience.
 
 ### Installation Guide
 
