@@ -5,7 +5,11 @@ export default function SearchForm() {
     const { searchText, setSearchText } = useSearchTextContext();
     return (
         <form className="mb-10 w-full max-w-[500px] mx-auto flex bg-white rounded-[4px] focus-within:outline focus-within:outline-white/50">
-            <button type="submit" className="py-4 pl-4 md:pl-5 pr-2">
+            <button
+                type="submit"
+                className="py-4 pl-4 md:pl-5 pr-2"
+                aria-label="Search"
+            >
                 <MagnifyingGlassIcon width={22} height={22} />
             </button>
             <input

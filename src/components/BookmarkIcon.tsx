@@ -15,6 +15,7 @@ export default function BookmarkIcon({ jobId }: BookmarkIconProps) {
                 e.stopPropagation();
                 handleBookmarkClick(jobId);
             }}
+            aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
         >
             <BookmarkFilledIcon
                 className={`w-5 h-5 ${
